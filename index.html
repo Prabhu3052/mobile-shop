@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile Phone List</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .cart-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #e268a5;
+      color: white;
+      border-radius: 50%;
+      padding: 12px 16px;
+      font-size: 1.2rem;
+      z-index: 1050;
+      border: none;
+      transition: transform 0.2s;
+    }
+
+    .cart-btn:hover {
+      transform: scale(1.1);
+    }
+
+    #phone-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .phone-item {
+      display: grid;
+      grid-template-columns: 80px 2fr 1fr 1fr 2fr;
+      align-items: center;
+      border: 1px solid #dee2e6;
+      border-radius: 12px;
+      background-color: #ffffff;
+      padding: 16px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+    }
+
+    .phone-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .phone-img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .phone-img:hover {
+      opacity: 0.9;
+    }
+
+    .phone-name {
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0 15px;
+    }
+
+    .phone-name small {
+      font-size: 0.85rem;
+      color: #6c757d;
+    }
+
+    .price {
+      font-weight: bold;
+      color: #28a745;
+      text-align: right;
+      padding-right: 10px;
+    }
+
+    .qty-btns {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .qty-btns input {
+      width: 50px;
+      text-align: center;
+      border-radius: 6px;
+    }
+
+    .total {
+      font-weight: bold;
+      color: #2c3e50;
+      text-align: right;
+      min-width: 100px;
+    }
+
+    .modal-content {
+      border-radius: 12px;
+    }
+
+    .modal-header {
+      background-color: #343a40;
+    }
+
+    .form-control:invalid {
+      border-color: #dc3545;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 0.85rem;
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .phone-item {
+        grid-template-columns: 80px 1fr;
+        grid-template-rows: auto auto auto;
+        gap: 10px;
+      }
+
+      .phone-name, .price, .qty-btns, .box-label {
+        grid-column: 1 / -1;
+      }
+
+      .qty-btns {
+        justify-content: center;
+      }
+
+      .price, .total {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="cart-btn" data-bs-toggle="modal" data-bs-target="#cartModal">
+    🛒 <span id="cart-count" class="badge bg-light text-dark">0</span>
+  </button>
+
+  <div class="container mt-5 pt-4">
+    <h3 class="mb-4 text-center text-primary">📱 Mobile Phones</h3>
+    <div id="phone-list">
+      <div class="phone-item" data-id="1" data-price="129900">
+        <img src="./imges/iphone.jpg" class="phone-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="./imges/iphone.jpg" alt="iPhone">
+        <div class="phone-name">iPhone 14 Pro Max (128GB)<br><small>ஐபோன் 14 ப்ரோ மேக்ஸ் (128ஜிபி)</small></div>
+        <div class="box-label"><b>1 Box</b></div>
+        <div class="price">Rs. 1,29,900</div>
+        <div class="qty-btns">
+          <button class="btn btn-outline-danger btn-sm" onclick="decreaseQty(this)">-</button>
+          <input type="text" value="0" class="form-control form-control-sm" readonly>
+          <button class="btn btn-outline-success btn-sm" onclick="increaseQty(this)">+</button>
+          <div class="total">Rs. 0</div>
+        </div>
+      </div>
+      <div class="phone-item" data-id="2" data-price="124999">
+        <img src="./imges/samsung.jpg" class="phone-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="./imges/samsung.jpg" alt="Samsung">
+        <div class="phone-name">Samsung Galaxy S23 Ultra (256GB)<br><small>சாம்சங் கேலக்ஸி S23 அல்ட்ரா (256ஜிபி)</small></div>
+        <div class="box-label"><b>1 Box</b></div>
+        <div class="price">Rs. 1,24,999</div>
+        <div class="qty-btns">
+          <button class="btn btn-outline-danger btn-sm" onclick="decreaseQty(this)">-</button>
+          <input type="text" value="0" class="form-control form-control-sm" readonly>
+          <button class="btn btn-outline-success btn-sm" onclick="increaseQty(this)">+</button>
+          <div class="total">Rs. 0</div>
+        </div>
+      </div>
+      <div class="phone-item" data-id="3" data-price="64999">
+        <img src="./imges/oneplus.jpg" class="phone-img" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="./imges/oneplus.jpg" alt="OnePlus">
+        <div class="phone-name">OnePlus 12 (12GB RAM, 256GB)<br><small>ஒன்பிளஸ் 12 (12ஜிபி ரேம், 256ஜிபி)</small></div>
+        <div class="box-label"><b>1 Box</b></div>
+        <div class="price">Rs. 64,999</div>
+        <div class="qty-btns">
+          <button class="btn btn-outline-danger btn-sm" onclick="decreaseQty(this)">-</button>
+          <input type="text" value="0" class="form-control form-control-sm" readonly>
+          <button class="btn btn-outline-success btn-sm" onclick="increaseQty(this)">+</button>
+          <div class="total">Rs. 0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Modal -->
+  <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-body text-center p-0">
+          <img id="modalImage" src="" class="img-fluid rounded" alt="Preview">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="cartModalLabel">🛒 Cart Summary & Checkout</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-8">
+              <h6>🧾 Items in Your Cart:</h6>
+              <div id="cart-items" class="p-3 border rounded bg-light mb-4">
+                <p class="text-muted">No items in cart.</p>
+              </div>
+              <h6 class="mb-3">👤 Customer Details</h6>
+              <form id="checkout-form" novalidate>
+                <div class="row g-3">
+                  <div class="col-md-8">
+                    <input type="tel" class="form-control" id="mobile" placeholder="📱 Mobile No" pattern="[0-9]{10}" required>
+                    <div class="error-message" id="mobile-error">Please enter a valid 10-digit mobile number.</div>
+                  </div>
+                  <div class="col-md-4 d-grid">
+                    <button class="btn btn-outline-success" type="button" id="get-otp">GET OTP</button>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">🔐 ENTER OTP HERE:</label>
+                    <div class="d-flex gap-2">
+                      <input type="text" maxlength="1" class="form-control text-center" style="width: 40px;" required>
+                      <input type="text" maxlength="1" class="form-control text-center" style="width: 40px;" required>
+                      <input type="text" maxlength="1" class="form-control text-center" style="width: 40px;" required>
+                      <input type="text" maxlength="1" class="form-control text-center" style="width: 40px;" required>
+                      <input type="text" maxlength="1" class="form-control text-center" style="width: 40px;" required>
+                      <input type="text" maxlength="1" class="form-control text-center" style="width: 40px;" required>
+                    </div>
+                    <div class="error-message" id="otp-error">Please enter a valid 6-digit OTP.</div>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" id="name" placeholder="🙍 Name" required>
+                    <div class="error-message" id="name-error">Please enter your name.</div>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="email" class="form-control" id="email" placeholder="📧 E-mail" required>
+                    <div class="error-message" id="email-error">Please enter a valid email address.</div>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" id="state" placeholder="🌐 State" required>
+                    <div class="error-message" id="state-error">Please enter your state.</div>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" id="city" placeholder="🏙️ Delivery City" required>
+                    <div class="error-message" id="city-error">Please enter your city.</div>
+                  </div>
+                  <div class="col-12">
+                    <textarea class="form-control" id="address" rows="2" placeholder="🏠 Address" required></textarea>
+                    <div class="error-message" id="address-error">Please enter your address.</div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="col-lg-4">
+              <div class="border rounded p-3 bg-white shadow-sm">
+                <h6>🧾 Order Summary</h6>
+                <ul class="list-group mb-3" id="summary-items"></ul>
+                <div class="d-flex justify-content-between border-top pt-2">
+                  <strong>Total</strong>
+                  <strong id="cart-total">₹0</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">❌ Close</button>
+          <button class="btn btn-primary" id="submit-order">✅ Submit Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Load cart from localStorage
+    const cart = JSON.parse(localStorage.getItem('cart')) || {};
+    
+    // Initialize quantities from cart
+    document.querySelectorAll('.phone-item').forEach(item => {
+      const id = item.getAttribute('data-id');
+      if (cart[id]) {
+        item.querySelector('input').value = cart[id].qty;
+        updateItemTotal(item.querySelector('.qty-btns'));
+      }
+    });
+    updateCart();
+
+    // Image modal
+    document.getElementById('imageModal').addEventListener('show.bs.modal', function (event) {
+      const triggerImg = event.relatedTarget;
+      const imageUrl = triggerImg.getAttribute('data-bs-image');
+      document.getElementById('modalImage').src = imageUrl;
+    });
+
+    function increaseQty(btn) {
+      const container = btn.parentElement;
+      const input = container.querySelector('input');
+      input.value = parseInt(input.value) + 1;
+      updateItemTotal(container);
+      saveToCart(container);
+      updateCart();
+    }
+
+    function decreaseQty(btn) {
+      const container = btn.parentElement;
+      const input = container.querySelector('input');
+      const current = parseInt(input.value);
+      if (current > 0) {
+        input.value = current - 1;
+        updateItemTotal(container);
+        saveToCart(container);
+        updateCart();
+      }
+    }
+
+    function updateItemTotal(container) {
+      const qty = parseInt(container.querySelector('input').value);
+      const price = parseInt(container.closest('.phone-item').getAttribute('data-price'));
+      const total = qty * price;
+      container.querySelector('.total').textContent = `Rs. ${total.toLocaleString('en-IN')}`;
+    }
+
+    function saveToCart(container) {
+      const item = container.closest('.phone-item');
+      const id = item.getAttribute('data-id');
+      const qty = parseInt(container.querySelector('input').value);
+      if (qty > 0) {
+        cart[id] = {
+          name: item.querySelector('.phone-name').textContent.split('\n')[0],
+          qty: qty,
+          price: parseInt(item.getAttribute('data-price'))
+        };
+      } else {
+        delete cart[id];
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    function updateCart() {
+      const cartList = document.getElementById('cart-items');
+      const summaryList = document.getElementById('summary-items');
+      const totalDisplay = document.getElementById('cart-total');
+      const cartCount = document.getElementById('cart-count');
+      cartList.innerHTML = '';
+      summaryList.innerHTML = '';
+      let grandTotal = 0;
+      let itemCount = 0;
+
+      Object.values(cart).forEach(item => {
+        const total = item.qty * item.price;
+        grandTotal += total;
+        itemCount += item.qty;
+
+        const cartEntry = document.createElement('div');
+        cartEntry.className = 'mb-2 border-bottom pb-2';
+        cartEntry.innerHTML = `<strong>${item.name}</strong><br>Qty: ${item.qty} | Total: Rs.${total.toLocaleString('en-IN')}`;
+        cartList.appendChild(cartEntry);
+
+        const li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between';
+        li.innerHTML = `<span>${item.name}</span><strong>Rs.${total.toLocaleString('en-IN')}</strong>`;
+        summaryList.appendChild(li);
+      });
+
+      if (itemCount === 0) {
+        cartList.innerHTML = '<p class="text-muted">No items in cart.</p>';
+      }
+
+      totalDisplay.textContent = `₹${grandTotal.toLocaleString('en-IN')}`;
+      cartCount.textContent = itemCount;
+    }
+
+    // Form validation
+    document.getElementById('submit-order').addEventListener('click', function (e) {
+      const form = document.getElementById('checkout-form');
+      const mobile = document.getElementById('mobile');
+      const name = document.getElementById('name');
+      const email = document.getElementById('email');
+      const state = document.getElementById('state');
+      const city = document.getElementById('city');
+      const address = document.getElementById('address');
+      const otpInputs = form.querySelectorAll('.text-center[maxlength="1"]');
+      let isValid = true;
+
+      // Reset error messages
+      document.querySelectorAll('.error-message').forEach(error => error.style.display = 'none');
+
+      // Validate mobile
+      if (!mobile.value.match(/^[0-9]{10}$/)) {
+        document.getElementById('mobile-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validate OTP
+      let otp = '';
+      otpInputs.forEach(input => otp += input.value);
+      if (!otp.match(/^[0-9]{6}$/)) {
+        document.getElementById('otp-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validate other fields
+      if (!name.value.trim()) {
+        document.getElementById('name-error').style.display = 'block';
+        isValid = false;
+      }
+      if (!email.value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+        document.getElementById('email-error').style.display = 'block';
+        isValid = false;
+      }
+      if (!state.value.trim()) {
+        document.getElementById('state-error').style.display = 'block';
+        isValid = false;
+      }
+      if (!city.value.trim()) {
+        document.getElementById('city-error').style.display = 'block';
+        isValid = false;
+      }
+      if (!address.value.trim()) {
+        document.getElementById('address-error').style.display = 'block';
+        isValid = false;
+      }
+
+      if (isValid && Object.keys(cart).length > 0) {
+        alert('Order submitted successfully!');
+        localStorage.removeItem('cart');
+        window.location.reload();
+      } else if (Object.keys(cart).length === 0) {
+        alert('Please add items to your cart before submitting.');
+      }
+    });
+
+    // Mock OTP functionality
+    document.getElementById('get-otp').addEventListener('click', function () {
+      const mobile = document.getElementById('mobile');
+      if (mobile.value.match(/^[0-9]{10}$/)) {
+        alert('OTP sent to ' + mobile.value + '. For demo purposes, use 123456.');
+      } else {
+        document.getElementById('mobile-error').style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

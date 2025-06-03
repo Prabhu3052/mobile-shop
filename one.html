@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premium Mobile Phones | Shop Now</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #6c5ce7;
+      --secondary-color: #a29bfe;
+      --accent-color: #fd79a8;
+      --dark-color: #2d3436;
+      --light-color: #f8f9fa;
+      --success-color: #00b894;
+      --danger-color: #d63031;
+    }
+    
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+    
+    .cart-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: var(--accent-color);
+      color: white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      z-index: 1050;
+      border: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+    }
+    
+    .cart-btn:hover {
+      transform: scale(1.1);
+      background-color: #e84393;
+    }
+    
+    .cart-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: var(--danger-color);
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    #phone-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .phone-item {
+      display: grid;
+      grid-template-columns: 100px 3fr 1fr 1.5fr 2fr;
+      align-items: center;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      background-color: #ffffff;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .phone-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      border-color: var(--secondary-color);
+    }
+
+    .phone-img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    
+    .phone-img:hover {
+      transform: scale(1.1);
+    }
+
+    .phone-name {
+      padding: 0 20px;
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+    
+    .phone-name small {
+      display: block;
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .box-label {
+      font-weight: 500;
+      color: var(--dark-color);
+      text-align: center;
+    }
+
+    .price {
+      font-weight: bold;
+      color: var(--success-color);
+      text-align: right;
+      font-size: 1.1rem;
+    }
+
+    .qty-btns {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    
+    .qty-btns .btn {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+    
+    .qty-input {
+      width: 50px;
+      text-align: center;
+      font-weight: bold;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 5px;
+    }
+
+    .total {
+      font-weight: bold;
+      color: var(--dark-color);
+      min-width: 100px;
+      text-align: right;
+      font-size: 1.1rem;
+    }
+    
+    /* Modal Enhancements */
+    .modal-header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+    }
+    
+    #modalImage {
+      max-height: 70vh;
+      object-fit: contain;
+    }
+    
+    /* Cart items */
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .cart-item-img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      border-radius: 5px;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+      .phone-item {
+        grid-template-columns: 80px 2fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 10px;
+      }
+      
+      .price, .qty-btns {
+        grid-column: span 1;
+      }
+      
+      .qty-btns {
+        grid-column: 2 / span 2;
+        justify-content: flex-start;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .phone-item {
+        grid-template-columns: 70px 1fr;
+      }
+      
+      .box-label, .price {
+        display: none;
+      }
+      
+      .qty-btns {
+        grid-column: 1 / span 2;
+      }
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .phone-item {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    
+    .phone-item:nth-child(2) { animation-delay: 0.1s; }
+    .phone-item:nth-child(3) { animation-delay: 0.2s; }
+    .phone-item:nth-child(4) { animation-delay: 0.3s; }
+    
+    /* OTP input styling */
+    .otp-input {
+      width: 45px;
+      height: 45px;
+      text-align: center;
+      font-size: 18px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      margin: 0 5px;
+      transition: all 0.3s;
+    }
+    
+    .otp-input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+      outline: none;
+    }
+    
+    /* Loading spinner */
+    .spinner {
+      display: none;
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+
+
+  <!-- Cart Button -->
+  <button class="cart-btn" data-bs-toggle="modal" data-bs-target="#cartModal">
+    <i class="fas fa-shopping-cart"></i>
+    <span class="cart-badge" id="cartCount">0</span>
+  </button>
+
+  <div class="container my-5">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-primary mb-3">Premium Mobile Phones</h2>
+      <p class="lead text-muted">Shop the latest smartphones with exclusive offers</p>
+    </div>
+
+    <!-- Filter/Search Bar -->
+    <div class="row mb-4">
+      <div class="col-md-6 mb-2">
+        <div class="input-group">
+          <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+          <input type="text" class="form-control" placeholder="Search phones..." id="searchInput">
+        </div>
+      </div>
+      <div class="col-md-6 mb-2">
+        <select class="form-select" id="sortSelect">
+          <option value="">Sort by</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="name">Name: A-Z</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="phone-list">
+      <!-- Header Row -->
+      <div class="phone-item bg-light fw-bold">
+        <div>Image</div>
+        <div>Name</div>
+        <div class="text-center">Content</div>
+        <div class="text-end">Price</div>
+        <div class="qty-btns pe-3">
+          <div>Quantity & Total</div>
+        </div>
+      </div>
+      
+      <!-- Phone Items -->
+      <div class="phone-item" data-price="129900" data-name="iPhone">
+        <img src="imges/iphone.jpg" class="phone-img" 
+             data-bs-toggle="modal" data-bs-target="#imageModal" 
+             data-bs-image="imges/iphone.jpg" alt="iPhone">
+        <div class="phone-name">
+          iPhone 14 Pro Max (128GB)
+          <small>ஐபோன் 14 ப்ரோ மேக்ஸ் (128ஜிபி) - Space Black</small>
+          <div class="mt-2">
+            <span class="badge bg-success me-2">New</span>
+            <span class="badge bg-info">Best Seller</span>
+          </div>
+        </div>
+        <div class="box-label"><i class="fas fa-box-open me-2"></i><b>1 Box</b></div>
+        <div class="price">₹1,29,900</div>
+        <div class="qty-btns">
+          <button class="btn btn-outline-danger btn-sm" onclick="decreaseQty(this)">
+            <i class="fas fa-minus"></i>
+          </button>
+          <input type="text" value="0" class="form-control qty-input" readonly>
+          <button class="btn btn-outline-success btn-sm" onclick="increaseQty(this)">
+            <i class="fas fa-plus"></i>
+          </button>
+          <div class="total">₹0</div>
+        </div>
+      </div>
+      
+      <div class="phone-item" data-price="124999" data-name="Samsung">
+        <img src="imges/samsung 23.jpg" class="phone-img"
+             data-bs-toggle="modal" data-bs-target="#imageModal" 
+             data-bs-image="imges/samsung 23.jpg" alt="Samsung">
+        <div class="phone-name">
+          Samsung Galaxy S23 Ultra (256GB)
+          <small>சாம்சங் கேலக்ஸி S23 அல்ட்ரா (256ஜிபி) - Phantom Black</small>
+          <div class="mt-2">
+            <span class="badge bg-primary me-2">5G</span>
+            <span class="badge bg-warning text-dark">S Pen</span>
+          </div>
+        </div>
+        <div class="box-label"><i class="fas fa-box-open me-2"></i><b>1 Box</b></div>
+        <div class="price">₹1,24,999</div>
+        <div class="qty-btns">
+          <button class="btn btn-outline-danger btn-sm" onclick="decreaseQty(this)">
+            <i class="fas fa-minus"></i>
+          </button>
+          <input type="text" value="0" class="form-control qty-input" readonly>
+          <button class="btn btn-outline-success btn-sm" onclick="increaseQty(this)">
+            <i class="fas fa-plus"></i>
+          </button>
+          <div class="total">₹0</div>
+        </div>
+      </div>
+
+      <div class="phone-item" data-price="64999" data-name="OnePlus">
+        <img src="imges/oneplus.png" class="phone-img"
+             data-bs-toggle="modal" data-bs-target="#imageModal" 
+             data-bs-image="imges/oneplus.png" alt="OnePlus">
+        <div class="phone-name">
+          OnePlus 12 (12GB RAM, 256GB)
+          <small>ஒன்பிளஸ் 12 (12ஜிபி ரேம், 256ஜிபி) - Flowy Emerald</small>
+          <div class="mt-2">
+            <span class="badge bg-danger me-2">Hasselblad</span>
+            <span class="badge bg-primary">5G</span>
+          </div>
+        </div>
+        <div class="box-label"><i class="fas fa-box-open me-2"></i><b>1 Box</b></div>
+        <div class="price">₹64,999</div>
+        <div class="qty-btns">
+          <button class="btn btn-outline-danger btn-sm" onclick="decreaseQty(this)">
+            <i class="fas fa-minus"></i>
+          </button>
+          <input type="text" value="0" class="form-control qty-input" readonly>
+          <button class="btn btn-outline-success btn-sm" onclick="increaseQty(this)">
+            <i class="fas fa-plus"></i>
+          </button>
+          <div class="total">₹0</div>
+        </div>
+      </div>
+      
+      <!-- Additional Phone Items -->
+      <div class="phone-item" data-price="55999" data-name="Google">
+        <img src="imges/Google pixel pro.png" class="phone-img"
+             data-bs-toggle="modal" data-bs-target="#imageModal" 
+             data-bs-image="imges/Google pixel pro.png" alt="Google Pixel">
+        <div class="phone-name">
+          Google Pixel 8 Pro (128GB)
+          <small>கூகுள் பிக்சல் 8 ப்ரோ (128ஜிபி) - Obsidian</small>
+          <div class="mt-2">
+            <span class="badge bg-info me-2">AI Powered</span>
+            <span class="badge bg-success">Best Camera</span>
+          </div>
+        </div>
+        <div class="box-label"><i class="fas fa-box-open me-2"></i><b>1 Box</b></div>
+        <div class="price">₹55,999</div>
+        <div class="qty-btns">
+          <button class="btn btn-outline-danger btn-sm" onclick="decreaseQty(this)">
+            <i class="fas fa-minus"></i>
+          </button>
+          <input type="text" value="0" class="form-control qty-input" readonly>
+          <button class="btn btn-outline-success btn-sm" onclick="increaseQty(this)">
+            <i class="fas fa-plus"></i>
+          </button>
+          <div class="total">₹0</div>
+        </div>
+      </div>
+      
+      <div class="phone-item" data-price="19999" data-name="Redmi">
+        <img src="imges/Redmi note 12 pro.png" class="phone-img"
+             data-bs-toggle="modal" data-bs-target="#imageModal" 
+             data-bs-image="imges/Redmi note 12 pro.png" alt="Redmi">
+        <div class="phone-name">
+          Redmi Note 12 Pro (8GB RAM, 128GB)
+          <small>ரெட்மி நோட் 12 ப்ரோ (8ஜிபி ரேம், 128ஜிபி) - Frost Blue</small>
+          <div class="mt-2">
+            <span class="badge bg-primary me-2">5G</span>
+            <span class="badge bg-warning text-dark">Value Deal</span>
+          </div>
+        </div>
+        <div class="box-label"><i class="fas fa-box-open me-2"></i><b>1 Box</b></div>
+        <div class="price">₹19,999</div>
+        <div class="qty-btns">
+          <button class="btn btn-outline-danger btn-sm" onclick="decreaseQty(this)">
+            <i class="fas fa-minus"></i>
+          </button>
+          <input type="text" value="0" class="form-control qty-input" readonly>
+          <button class="btn btn-outline-success btn-sm" onclick="increaseQty(this)">
+            <i class="fas fa-plus"></i>
+          </button>
+          <div class="total">₹0</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Empty State -->
+    <div id="noResults" class="text-center py-5" style="display: none;">
+      <i class="fas fa-search fa-3x text-muted mb-3"></i>
+      <h4 class="text-muted">No phones found</h4>
+      <p>Try adjusting your search or filter to find what you're looking for.</p>
+    </div>
+  </div>
+
+  <!-- Image Modal -->
+  <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Product Image</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center p-0">
+          <img id="modalImage" src="" class="img-fluid" alt="Preview" style="max-height: 70vh;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="cartModalLabel">
+            <i class="fas fa-shopping-cart me-2"></i>Your Shopping Cart
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row">
+            <!-- Left Column -->
+            <div class="col-lg-8">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <h6 class="mb-0"><i class="fas fa-list me-2"></i>Items in Your Cart</h6>
+                <span class="badge bg-primary rounded-pill" id="itemCount">0 items</span>
+              </div>
+              
+              <div id="cart-items" class="p-3 border rounded bg-light mb-4">
+                <div class="text-center py-4">
+                  <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                  <p class="text-muted mb-0">Your cart is empty</p>
+                  <small class="text-muted">Start adding some products!</small>
+                </div>
+              </div>
+
+              <h6 class="mb-3"><i class="fas fa-user me-2"></i>Customer Details</h6>
+              <form id="checkoutForm">
+                <div class="row g-3">
+                  <div class="col-md-8">
+                    <div class="input-group">
+                      <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
+                      <input type="tel" class="form-control" placeholder="Mobile Number" id="mobileNumber" required>
+                    </div>
+                  </div>
+                  <div class="col-md-4 d-grid">
+                    <button class="btn btn-success" type="button" id="getOtpBtn">
+                      <span id="otpText">GET OTP</span>
+                      <span class="spinner" id="otpSpinner"></span>
+                    </button>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label"><i class="fas fa-key me-2"></i>Enter OTP</label>
+                    <div class="d-flex justify-content-center gap-2 mb-3">
+                      <input type="text" maxlength="1" class="form-control otp-input">
+                      <input type="text" maxlength="1" class="form-control otp-input">
+                      <input type="text" maxlength="1" class="form-control otp-input">
+                      <input type="text" maxlength="1" class="form-control otp-input">
+                      <input type="text" maxlength="1" class="form-control otp-input">
+                      <input type="text" maxlength="1" class="form-control otp-input">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group">
+                      <span class="input-group-text"><i class="fas fa-user"></i></span>
+                      <input type="text" class="form-control" placeholder="Full Name" required>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group">
+                      <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                      <input type="email" class="form-control" placeholder="Email Address">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group">
+                      <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                      <select class="form-select" required>
+                        <option value="">Select State</option>
+                        <option>Tamil Nadu</option>
+                        <option>Kerala</option>
+                        <option>Karnataka</option>
+                        <option>Andhra Pradesh</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group">
+                      <span class="input-group-text"><i class="fas fa-city"></i></span>
+                      <input type="text" class="form-control" placeholder="Delivery City" required>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="input-group">
+                      <span class="input-group-text"><i class="fas fa-home"></i></span>
+                      <textarea class="form-control" rows="2" placeholder="Full Address" required></textarea>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="saveInfo">
+                      <label class="form-check-label" for="saveInfo">
+                        Save this information for next time
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-lg-4">
+              <div class="sticky-top" style="top: 20px;">
+                <div class="border rounded p-3 bg-white shadow-sm mb-4">
+                  <h6><i class="fas fa-receipt me-2"></i>Order Summary</h6>
+                  <ul class="list-group mb-3" id="summary-items"></ul>
+                  <div class="d-flex justify-content-between border-top pt-2 mb-2">
+                    <span>Subtotal</span>
+                    <span id="subtotal">₹0</span>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Shipping</span>
+                    <span>FREE</span>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Tax (18%)</span>
+                    <span id="tax">₹0</span>
+                  </div>
+                  <div class="d-flex justify-content-between border-top pt-2 fw-bold fs-5">
+                    <span>Total</span>
+                    <span id="cart-total">₹0</span>
+                  </div>
+                </div>
+                
+                <div class="border rounded p-3 bg-white shadow-sm">
+                  <h6><i class="fas fa-credit-card me-2"></i>Payment Method</h6>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="cod" checked>
+                    <label class="form-check-label" for="cod">
+                      <i class="fas fa-money-bill-wave me-2"></i>Cash on Delivery
+                    </label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="upi">
+                    <label class="form-check-label" for="upi">
+                      <i class="fas fa-mobile-alt me-2"></i>UPI Payment
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="card">
+                    <label class="form-check-label" for="card">
+                      <i class="fas fa-credit-card me-2"></i>Credit/Debit Card
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer justify-content-between">
+          <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+            <i class="fas fa-times me-2"></i>Continue Shopping
+          </button>
+          <button class="btn btn-primary" id="checkoutBtn" disabled>
+            <i class="fas fa-lock me-2"></i>Secure Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ 
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Initialize modal for image preview
+    const imageModal = document.getElementById('imageModal');
+    if (imageModal) {
+      imageModal.addEventListener('show.bs.modal', function (event) {
+        const triggerImg = event.relatedTarget;
+        const imageUrl = triggerImg.getAttribute('data-bs-image');
+        imageModal.querySelector('#modalImage').src = imageUrl;
+      });
+    }
+
+    // Quantity functions
+    function increaseQty(btn) {
+      const container = btn.parentElement;
+      const input = container.querySelector('input');
+      input.value = parseInt(input.value) + 1;
+      updateItemTotal(container);
+      updateCart();
+    }
+
+    function decreaseQty(btn) {
+      const container = btn.parentElement;
+      const input = container.querySelector('input');
+      const current = parseInt(input.value);
+      if (current > 0) {
+        input.value = current - 1;
+        updateItemTotal(container);
+        updateCart();
+      }
+    }
+
+    function updateItemTotal(container) {
+      const qty = parseInt(container.querySelector('input').value);
+      const price = parseInt(container.closest('.phone-item').getAttribute('data-price'));
+      const total = qty * price;
+      container.querySelector('.total').textContent = `₹${total.toLocaleString('en-IN')}`;
+    }
+
+    // Cart functionality
+    function updateCart() {
+      const phoneItems = document.querySelectorAll('.phone-item:not(.bg-light)');
+      const cartList = document.getElementById('cart-items');
+      const summaryList = document.getElementById('summary-items');
+      const totalDisplay = document.getElementById('cart-total');
+      const subtotalDisplay = document.getElementById('subtotal');
+      const taxDisplay = document.getElementById('tax');
+      const itemCountDisplay = document.getElementById('itemCount');
+      const cartCountDisplay = document.getElementById('cartCount');
+      const checkoutBtn = document.getElementById('checkoutBtn');
+      
+      let cartHTML = '';
+      let summaryHTML = '';
+      let grandTotal = 0;
+      let itemCount = 0;
+      let cartItemCount = 0;
+
+      phoneItems.forEach(item => {
+        const name = item.querySelector('.phone-name').textContent.split('\n')[0];
+        const qty = parseInt(item.querySelector('input').value);
+        const price = parseInt(item.getAttribute('data-price'));
+        const image = item.querySelector('img').src;
+
+        if (qty > 0) {
+          itemCount++;
+          cartItemCount += qty;
+          const total = qty * price;
+          grandTotal += total;
+
+          cartHTML += `
+            <div class="cart-item">
+              <div class="d-flex align-items-center">
+                <img src="${image}" class="cart-item-img me-3" alt="${name}">
+                <div>
+                  <h6 class="mb-1">${name}</h6>
+                  <small class="text-muted">₹${price.toLocaleString('en-IN')} × ${qty}</small>
+                </div>
+              </div>
+              <strong>₹${total.toLocaleString('en-IN')}</strong>
+            </div>
+          `;
+
+          summaryHTML += `
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>${name} <span class="badge bg-primary rounded-pill">${qty}</span></span>
+              <strong>₹${total.toLocaleString('en-IN')}</strong>
+            </li>
+          `;
+        }
+      });
+
+      // Update cart display
+      if (cartHTML === '') {
+        cartList.innerHTML = `
+          <div class="text-center py-4">
+            <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+            <p class="text-muted mb-0">Your cart is empty</p>
+            <small class="text-muted">Start adding some products!</small>
+          </div>
+        `;
+      } else {
+        cartList.innerHTML = cartHTML;
+      }
+
+      // Update summary
+      summaryList.innerHTML = summaryHTML;
+      
+      // Calculate tax (18%)
+      const subtotal = grandTotal;
+      const tax = Math.round(subtotal * 0.18);
+      const totalWithTax = subtotal + tax;
+      
+      // Update totals
+      subtotalDisplay.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+      taxDisplay.textContent = `₹${tax.toLocaleString('en-IN')}`;
+      totalDisplay.textContent = `₹${totalWithTax.toLocaleString('en-IN')}`;
+      
+      // Update item counts
+      itemCountDisplay.textContent = `${itemCount} ${itemCount === 1 ? 'item' : 'items'}`;
+      cartCountDisplay.textContent = cartItemCount;
+      
+      // Enable/disable checkout button
+      checkoutBtn.disabled = itemCount === 0;
+    }
+
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    const sortSelect = document.getElementById('sortSelect');
+    const noResults = document.getElementById('noResults');
+    
+    if (searchInput) {
+      searchInput.addEventListener('input', filterPhones);
+    }
+    
+    if (sortSelect) {
+      sortSelect.addEventListener('change', filterPhones);
+    }
+    
+    function filterPhones() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const sortValue = sortSelect.value;
+      const phoneItems = document.querySelectorAll('.phone-item:not(.bg-light)');
+      let hasVisibleItems = false;
+      
+      // Filter by search term
+      phoneItems.forEach(item => {
+        const name = item.querySelector('.phone-name').textContent.toLowerCase();
+        const dataName = item.getAttribute('data-name').toLowerCase();
+        
+        if (name.includes(searchTerm) || dataName.includes(searchTerm)) {
+          item.style.display = 'grid';
+          hasVisibleItems = true;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+      
+      // Sort items
+      if (sortValue) {
+        const container = document.getElementById('phone-list');
+        const items = Array.from(phoneItems).filter(item => item.style.display !== 'none');
+        
+        items.sort((a, b) => {
+          const aPrice = parseInt(a.getAttribute('data-price'));
+          const bPrice = parseInt(b.getAttribute('data-price'));
+          const aName = a.querySelector('.phone-name').textContent;
+          const bName = b.querySelector('.phone-name').textContent;
+          
+          switch(sortValue) {
+            case 'price-low':
+              return aPrice - bPrice;
+            case 'price-high':
+              return bPrice - aPrice;
+            case 'name':
+              return aName.localeCompare(bName);
+            default:
+              return 0;
+          }
+        });
+        
+        // Re-append sorted items
+        items.forEach(item => {
+          container.appendChild(item);
+        });
+      }
+      
+      // Show/hide no results message
+      noResults.style.display = hasVisibleItems ? 'none' : 'block';
+    }
+    
+    // OTP button spinner
+    const getOtpBtn = document.getElementById('getOtpBtn');
+    if (getOtpBtn) {
+      getOtpBtn.addEventListener('click', function() {
+        const spinner = document.getElementById('otpSpinner');
+        const otpText = document.getElementById('otpText');
+        
+        // Show spinner and change text
+        spinner.style.display = 'inline-block';
+        otpText.textContent = 'Sending...';
+        getOtpBtn.disabled = true;
+        
+        // Simulate OTP sending
+        setTimeout(() => {
+          spinner.style.display = 'none';
+          otpText.textContent = 'OTP Sent!';
+          
+          // Revert after 2 seconds
+          setTimeout(() => {
+            otpText.textContent = 'GET OTP';
+            getOtpBtn.disabled = false;
+          }, 2000);
+        }, 1500);
+      });
+    }
+    
+    // Auto-focus next OTP input
+    const otpInputs = document.querySelectorAll('.otp-input');
+    otpInputs.forEach((input, index) => {
+      input.addEventListener('input', () => {
+        if (input.value.length === 1 && index < otpInputs.length - 1) {
+          otpInputs[index + 1].focus();
+        }
+      });
+      
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && input.value.length === 0 && index > 0) {
+          otpInputs[index - 1].focus();
+        }
+      });
+    });
+    
+    // Initialize cart count
+    updateCart();
+  </script>
+</body>
+</html>
