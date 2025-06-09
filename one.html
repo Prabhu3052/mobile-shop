@@ -280,13 +280,13 @@
     <i class="fas fa-shopping-cart"></i>
     <span class="cart-badge" id="cartCount">0</span>
   </button>
-
+  
   <div class="container my-5">
     <div class="text-center mb-5">
       <h2 class="fw-bold text-primary mb-3">Premium Mobile Phones</h2>
       <p class="lead text-muted">Shop the latest smartphones with exclusive offers</p>
     </div>
-
+  
     <!-- Filter/Search Bar -->
     <div class="row mb-4">
       <div class="col-md-6 mb-2">
@@ -304,7 +304,7 @@
         </select>
       </div>
     </div>
-
+  
     <div id="phone-list">
       <!-- Header Row -->
       <div class="phone-item bg-light fw-bold">
@@ -318,7 +318,7 @@
       </div>
       
       <!-- Phone Items -->
-      <div class="phone-item" data-price="129900" data-name="iPhone">
+      <div class="phone-item" id="iphone-14-pro-max" data-price="129900" data-name="iPhone">
         <img src="imges/iphone.jpg" class="phone-img" 
              data-bs-toggle="modal" data-bs-target="#imageModal" 
              data-bs-image="imges/iphone.jpg" alt="iPhone">
@@ -344,7 +344,7 @@
         </div>
       </div>
       
-      <div class="phone-item" data-price="124999" data-name="Samsung">
+      <div class="phone-item" id="samsung-s23-ultra" data-price="124999" data-name="Samsung">
         <img src="imges/samsung 23.jpg" class="phone-img"
              data-bs-toggle="modal" data-bs-target="#imageModal" 
              data-bs-image="imges/samsung 23.jpg" alt="Samsung">
@@ -369,8 +369,8 @@
           <div class="total">₹0</div>
         </div>
       </div>
-
-      <div class="phone-item" data-price="64999" data-name="OnePlus">
+  
+      <div class="phone-item" id="oneplus-12" data-price="64999" data-name="OnePlus">
         <img src="imges/oneplus.png" class="phone-img"
              data-bs-toggle="modal" data-bs-target="#imageModal" 
              data-bs-image="imges/oneplus.png" alt="OnePlus">
@@ -397,7 +397,7 @@
       </div>
       
       <!-- Additional Phone Items -->
-      <div class="phone-item" data-price="55999" data-name="Google">
+      <div class="phone-item" id="google-pixel-8-pro" data-price="55999" data-name="Google">
         <img src="imges/Google pixel pro.png" class="phone-img"
              data-bs-toggle="modal" data-bs-target="#imageModal" 
              data-bs-image="imges/Google pixel pro.png" alt="Google Pixel">
@@ -423,7 +423,7 @@
         </div>
       </div>
       
-      <div class="phone-item" data-price="19999" data-name="Redmi">
+      <div class="phone-item" id="redmi-note-12-pro" data-price="19999" data-name="Redmi">
         <img src="imges/Redmi note 12 pro.png" class="phone-img"
              data-bs-toggle="modal" data-bs-target="#imageModal" 
              data-bs-image="imges/Redmi note 12 pro.png" alt="Redmi">
@@ -457,7 +457,7 @@
       <p>Try adjusting your search or filter to find what you're looking for.</p>
     </div>
   </div>
-
+  
   <!-- Image Modal -->
   <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -472,7 +472,7 @@
       </div>
     </div>
   </div>
-
+  
   <!-- Cart Modal -->
   <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
@@ -483,7 +483,7 @@
           </h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-
+  
         <div class="modal-body">
           <div class="row">
             <!-- Left Column -->
@@ -500,7 +500,7 @@
                   <small class="text-muted">Start adding some products!</small>
                 </div>
               </div>
-
+  
               <h6 class="mb-3"><i class="fas fa-user me-2"></i>Customer Details</h6>
               <form id="checkoutForm">
                 <div class="row g-3">
@@ -513,7 +513,7 @@
                   <div class="col-md-4 d-grid">
                     <button class="btn btn-success" type="button" id="getOtpBtn">
                       <span id="otpText">GET OTP</span>
-                      <span class="spinner" id="otpSpinner"></span>
+                      <span class="spinner" id="otpSpinner" style="display: none;"></span>
                     </button>
                   </div>
                   <div class="col-12">
@@ -574,7 +574,7 @@
                 </div>
               </form>
             </div>
-
+  
             <!-- Right Column -->
             <div class="col-lg-4">
               <div class="sticky-top" style="top: 20px;">
@@ -624,7 +624,7 @@
             </div>
           </div>
         </div>
-
+  
         <div class="modal-footer justify-content-between">
           <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
             <i class="fas fa-times me-2"></i>Continue Shopping
@@ -636,243 +636,281 @@
       </div>
     </div>
   </div>
-
  
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Initialize modal for image preview
-    const imageModal = document.getElementById('imageModal');
-    if (imageModal) {
-      imageModal.addEventListener('show.bs.modal', function (event) {
-        const triggerImg = event.relatedTarget;
-        const imageUrl = triggerImg.getAttribute('data-bs-image');
-        imageModal.querySelector('#modalImage').src = imageUrl;
-      });
-    }
+<script>
+  // Initialize modal for image preview
+  const imageModal = document.getElementById('imageModal');
+  if (imageModal) {
+    imageModal.addEventListener('show.bs.modal', function (event) {
+      const triggerImg = event.relatedTarget;
+      const imageUrl = triggerImg.getAttribute('data-bs-image');
+      imageModal.querySelector('#modalImage').src = imageUrl;
+    });
+  }
 
-    // Quantity functions
-    function increaseQty(btn) {
-      const container = btn.parentElement;
-      const input = container.querySelector('input');
-      input.value = parseInt(input.value) + 1;
+  // Load cart from localStorage when page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    loadCart();
+  });
+
+  // Quantity functions
+  function increaseQty(btn) {
+    const container = btn.parentElement;
+    const input = container.querySelector('input');
+    input.value = parseInt(input.value) + 1;
+    updateItemTotal(container);
+    updateCart();
+  }
+
+  function decreaseQty(btn) {
+    const container = btn.parentElement;
+    const input = container.querySelector('input');
+    const current = parseInt(input.value);
+    if (current > 0) {
+      input.value = current - 1;
       updateItemTotal(container);
       updateCart();
     }
+  }
 
-    function decreaseQty(btn) {
-      const container = btn.parentElement;
-      const input = container.querySelector('input');
-      const current = parseInt(input.value);
-      if (current > 0) {
-        input.value = current - 1;
-        updateItemTotal(container);
-        updateCart();
-      }
-    }
+  function updateItemTotal(container) {
+    const qty = parseInt(container.querySelector('input').value);
+    const price = parseInt(container.closest('.phone-item').getAttribute('data-price'));
+    const total = qty * price;
+    container.querySelector('.total').textContent = `₹${total.toLocaleString('en-IN')}`;
+  }
 
-    function updateItemTotal(container) {
-      const qty = parseInt(container.querySelector('input').value);
-      const price = parseInt(container.closest('.phone-item').getAttribute('data-price'));
-      const total = qty * price;
-      container.querySelector('.total').textContent = `₹${total.toLocaleString('en-IN')}`;
-    }
-
-    // Cart functionality
-    function updateCart() {
-      const phoneItems = document.querySelectorAll('.phone-item:not(.bg-light)');
-      const cartList = document.getElementById('cart-items');
-      const summaryList = document.getElementById('summary-items');
-      const totalDisplay = document.getElementById('cart-total');
-      const subtotalDisplay = document.getElementById('subtotal');
-      const taxDisplay = document.getElementById('tax');
-      const itemCountDisplay = document.getElementById('itemCount');
-      const cartCountDisplay = document.getElementById('cartCount');
-      const checkoutBtn = document.getElementById('checkoutBtn');
-      
-      let cartHTML = '';
-      let summaryHTML = '';
-      let grandTotal = 0;
-      let itemCount = 0;
-      let cartItemCount = 0;
-
-      phoneItems.forEach(item => {
-        const name = item.querySelector('.phone-name').textContent.split('\n')[0];
-        const qty = parseInt(item.querySelector('input').value);
-        const price = parseInt(item.getAttribute('data-price'));
-        const image = item.querySelector('img').src;
-
-        if (qty > 0) {
-          itemCount++;
-          cartItemCount += qty;
-          const total = qty * price;
-          grandTotal += total;
-
-          cartHTML += `
-            <div class="cart-item">
-              <div class="d-flex align-items-center">
-                <img src="${image}" class="cart-item-img me-3" alt="${name}">
-                <div>
-                  <h6 class="mb-1">${name}</h6>
-                  <small class="text-muted">₹${price.toLocaleString('en-IN')} × ${qty}</small>
-                </div>
-              </div>
-              <strong>₹${total.toLocaleString('en-IN')}</strong>
-            </div>
-          `;
-
-          summaryHTML += `
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span>${name} <span class="badge bg-primary rounded-pill">${qty}</span></span>
-              <strong>₹${total.toLocaleString('en-IN')}</strong>
-            </li>
-          `;
-        }
-      });
-
-      // Update cart display
-      if (cartHTML === '') {
-        cartList.innerHTML = `
-          <div class="text-center py-4">
-            <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
-            <p class="text-muted mb-0">Your cart is empty</p>
-            <small class="text-muted">Start adding some products!</small>
-          </div>
-        `;
-      } else {
-        cartList.innerHTML = cartHTML;
-      }
-
-      // Update summary
-      summaryList.innerHTML = summaryHTML;
-      
-      // Calculate tax (18%)
-      const subtotal = grandTotal;
-      const tax = Math.round(subtotal * 0.18);
-      const totalWithTax = subtotal + tax;
-      
-      // Update totals
-      subtotalDisplay.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
-      taxDisplay.textContent = `₹${tax.toLocaleString('en-IN')}`;
-      totalDisplay.textContent = `₹${totalWithTax.toLocaleString('en-IN')}`;
-      
-      // Update item counts
-      itemCountDisplay.textContent = `${itemCount} ${itemCount === 1 ? 'item' : 'items'}`;
-      cartCountDisplay.textContent = cartItemCount;
-      
-      // Enable/disable checkout button
-      checkoutBtn.disabled = itemCount === 0;
-    }
-
-    // Search functionality
-    const searchInput = document.getElementById('searchInput');
-    const sortSelect = document.getElementById('sortSelect');
-    const noResults = document.getElementById('noResults');
+  // Save cart to localStorage
+  function saveCart() {
+    const phoneItems = document.querySelectorAll('.phone-item:not(.bg-light)');
+    const cartData = {};
     
-    if (searchInput) {
-      searchInput.addEventListener('input', filterPhones);
-    }
-    
-    if (sortSelect) {
-      sortSelect.addEventListener('change', filterPhones);
-    }
-    
-    function filterPhones() {
-      const searchTerm = searchInput.value.toLowerCase();
-      const sortValue = sortSelect.value;
-      const phoneItems = document.querySelectorAll('.phone-item:not(.bg-light)');
-      let hasVisibleItems = false;
-      
-      // Filter by search term
-      phoneItems.forEach(item => {
-        const name = item.querySelector('.phone-name').textContent.toLowerCase();
-        const dataName = item.getAttribute('data-name').toLowerCase();
-        
-        if (name.includes(searchTerm) || dataName.includes(searchTerm)) {
-          item.style.display = 'grid';
-          hasVisibleItems = true;
-        } else {
-          item.style.display = 'none';
-        }
-      });
-      
-      // Sort items
-      if (sortValue) {
-        const container = document.getElementById('phone-list');
-        const items = Array.from(phoneItems).filter(item => item.style.display !== 'none');
-        
-        items.sort((a, b) => {
-          const aPrice = parseInt(a.getAttribute('data-price'));
-          const bPrice = parseInt(b.getAttribute('data-price'));
-          const aName = a.querySelector('.phone-name').textContent;
-          const bName = b.querySelector('.phone-name').textContent;
-          
-          switch(sortValue) {
-            case 'price-low':
-              return aPrice - bPrice;
-            case 'price-high':
-              return bPrice - aPrice;
-            case 'name':
-              return aName.localeCompare(bName);
-            default:
-              return 0;
-          }
-        });
-        
-        // Re-append sorted items
-        items.forEach(item => {
-          container.appendChild(item);
-        });
-      }
-      
-      // Show/hide no results message
-      noResults.style.display = hasVisibleItems ? 'none' : 'block';
-    }
-    
-    // OTP button spinner
-    const getOtpBtn = document.getElementById('getOtpBtn');
-    if (getOtpBtn) {
-      getOtpBtn.addEventListener('click', function() {
-        const spinner = document.getElementById('otpSpinner');
-        const otpText = document.getElementById('otpText');
-        
-        // Show spinner and change text
-        spinner.style.display = 'inline-block';
-        otpText.textContent = 'Sending...';
-        getOtpBtn.disabled = true;
-        
-        // Simulate OTP sending
-        setTimeout(() => {
-          spinner.style.display = 'none';
-          otpText.textContent = 'OTP Sent!';
-          
-          // Revert after 2 seconds
-          setTimeout(() => {
-            otpText.textContent = 'GET OTP';
-            getOtpBtn.disabled = false;
-          }, 2000);
-        }, 1500);
-      });
-    }
-    
-    // Auto-focus next OTP input
-    const otpInputs = document.querySelectorAll('.otp-input');
-    otpInputs.forEach((input, index) => {
-      input.addEventListener('input', () => {
-        if (input.value.length === 1 && index < otpInputs.length - 1) {
-          otpInputs[index + 1].focus();
-        }
-      });
-      
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && input.value.length === 0 && index > 0) {
-          otpInputs[index - 1].focus();
-        }
-      });
+    phoneItems.forEach(item => {
+      const id = item.getAttribute('data-id') || item.id;
+      const qty = parseInt(item.querySelector('input').value);
+      cartData[id] = qty;
     });
     
-    // Initialize cart count
+    localStorage.setItem('phoneCart', JSON.stringify(cartData));
+  }
+
+  // Load cart from localStorage
+  function loadCart() {
+    const cartData = JSON.parse(localStorage.getItem('phoneCart'));
+    if (!cartData) return;
+    
+    Object.keys(cartData).forEach(id => {
+      const item = document.getElementById(id) || document.querySelector(`[data-id="${id}"]`);
+      if (item) {
+        const input = item.querySelector('input');
+        if (input) {
+          input.value = cartData[id];
+          updateItemTotal(input.parentElement);
+        }
+      }
+    });
+    
     updateCart();
-  </script>
+  }
+
+  // Cart functionality
+  function updateCart() {
+    const phoneItems = document.querySelectorAll('.phone-item:not(.bg-light)');
+    const cartList = document.getElementById('cart-items');
+    const summaryList = document.getElementById('summary-items');
+    const totalDisplay = document.getElementById('cart-total');
+    const subtotalDisplay = document.getElementById('subtotal');
+    const taxDisplay = document.getElementById('tax');
+    const itemCountDisplay = document.getElementById('itemCount');
+    const cartCountDisplay = document.getElementById('cartCount');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    
+    let cartHTML = '';
+    let summaryHTML = '';
+    let grandTotal = 0;
+    let itemCount = 0;
+    let cartItemCount = 0;
+
+    phoneItems.forEach(item => {
+      const name = item.querySelector('.phone-name').textContent.split('\n')[0];
+      const qty = parseInt(item.querySelector('input').value);
+      const price = parseInt(item.getAttribute('data-price'));
+      const image = item.querySelector('img').src;
+      const id = item.getAttribute('data-id') || item.id;
+
+      if (qty > 0) {
+        itemCount++;
+        cartItemCount += qty;
+        const total = qty * price;
+        grandTotal += total;
+
+        cartHTML += `
+          <div class="cart-item">
+            <div class="d-flex align-items-center">
+              <img src="${image}" class="cart-item-img me-3" alt="${name}">
+              <div>
+                <h6 class="mb-1">${name}</h6>
+                <small class="text-muted">₹${price.toLocaleString('en-IN')} × ${qty}</small>
+              </div>
+            </div>
+            <strong>₹${total.toLocaleString('en-IN')}</strong>
+          </div>
+        `;
+
+        summaryHTML += `
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>${name} <span class="badge bg-primary rounded-pill">${qty}</span></span>
+            <strong>₹${total.toLocaleString('en-IN')}</strong>
+          </li>
+        `;
+      }
+    });
+
+    // Update cart display
+    if (cartHTML === '') {
+      cartList.innerHTML = `
+        <div class="text-center py-4">
+          <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+          <p class="text-muted mb-0">Your cart is empty</p>
+          <small class="text-muted">Start adding some products!</small>
+        </div>
+      `;
+    } else {
+      cartList.innerHTML = cartHTML;
+    }
+
+    // Update summary
+    summaryList.innerHTML = summaryHTML;
+    
+    // Calculate tax (18%)
+    const subtotal = grandTotal;
+    const tax = Math.round(subtotal * 0.18);
+    const totalWithTax = subtotal + tax;
+    
+    // Update totals
+    subtotalDisplay.textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+    taxDisplay.textContent = `₹${tax.toLocaleString('en-IN')}`;
+    totalDisplay.textContent = `₹${totalWithTax.toLocaleString('en-IN')}`;
+    
+    // Update item counts
+    itemCountDisplay.textContent = `${itemCount} ${itemCount === 1 ? 'item' : 'items'}`;
+    cartCountDisplay.textContent = cartItemCount;
+    
+    // Enable/disable checkout button
+    checkoutBtn.disabled = itemCount === 0;
+    
+    // Save cart to localStorage
+    saveCart();
+  }
+
+  // Search functionality
+  const searchInput = document.getElementById('searchInput');
+  const sortSelect = document.getElementById('sortSelect');
+  const noResults = document.getElementById('noResults');
+  
+  if (searchInput) {
+    searchInput.addEventListener('input', filterPhones);
+  }
+  
+  if (sortSelect) {
+    sortSelect.addEventListener('change', filterPhones);
+  }
+  
+  function filterPhones() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const sortValue = sortSelect.value;
+    const phoneItems = document.querySelectorAll('.phone-item:not(.bg-light)');
+    let hasVisibleItems = false;
+    
+    // Filter by search term
+    phoneItems.forEach(item => {
+      const name = item.querySelector('.phone-name').textContent.toLowerCase();
+      const dataName = item.getAttribute('data-name').toLowerCase();
+      
+      if (name.includes(searchTerm) || dataName.includes(searchTerm)) {
+        item.style.display = 'grid';
+        hasVisibleItems = true;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+    
+    // Sort items
+    if (sortValue) {
+      const container = document.getElementById('phone-list');
+      const items = Array.from(phoneItems).filter(item => item.style.display !== 'none');
+      
+      items.sort((a, b) => {
+        const aPrice = parseInt(a.getAttribute('data-price'));
+        const bPrice = parseInt(b.getAttribute('data-price'));
+        const aName = a.querySelector('.phone-name').textContent;
+        const bName = b.querySelector('.phone-name').textContent;
+        
+        switch(sortValue) {
+          case 'price-low':
+            return aPrice - bPrice;
+          case 'price-high':
+            return bPrice - aPrice;
+          case 'name':
+            return aName.localeCompare(bName);
+          default:
+            return 0;
+        }
+      });
+      
+      // Re-append sorted items
+      items.forEach(item => {
+        container.appendChild(item);
+      });
+    }
+    
+    // Show/hide no results message
+    noResults.style.display = hasVisibleItems ? 'none' : 'block';
+  }
+  
+  // OTP button spinner
+  const getOtpBtn = document.getElementById('getOtpBtn');
+  if (getOtpBtn) {
+    getOtpBtn.addEventListener('click', function() {
+      const spinner = document.getElementById('otpSpinner');
+      const otpText = document.getElementById('otpText');
+      
+      // Show spinner and change text
+      spinner.style.display = 'inline-block';
+      otpText.textContent = 'Sending...';
+      getOtpBtn.disabled = true;
+      
+      // Simulate OTP sending
+      setTimeout(() => {
+        spinner.style.display = 'none';
+        otpText.textContent = 'OTP Sent!';
+        
+        // Revert after 2 seconds
+        setTimeout(() => {
+          otpText.textContent = 'GET OTP';
+          getOtpBtn.disabled = false;
+        }, 2000);
+      }, 1500);
+    });
+  }
+  
+  // Auto-focus next OTP input
+  const otpInputs = document.querySelectorAll('.otp-input');
+  otpInputs.forEach((input, index) => {
+    input.addEventListener('input', () => {
+      if (input.value.length === 1 && index < otpInputs.length - 1) {
+        otpInputs[index + 1].focus();
+      }
+    });
+    
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && input.value.length === 0 && index > 0) {
+        otpInputs[index - 1].focus();
+      }
+    });
+  });
+</script>
 </body>
 </html>
